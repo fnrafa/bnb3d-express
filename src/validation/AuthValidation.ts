@@ -20,6 +20,25 @@ class AuthValidation extends Validator {
             })
         );
     }
+
+    public static loginBNB() {
+        return this.validate(
+            Joi.object({
+                address: this.text(1, 255),
+                password: this.password(),
+            })
+        );
+    }
+
+    public static register() {
+        return this.validate(
+            Joi.object({
+                address: this.text(1, 255),
+                password: this.password(),
+                username: Joi.string().optional(),
+            })
+        );
+    }
 }
 
 export default AuthValidation;

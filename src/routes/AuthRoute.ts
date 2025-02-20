@@ -10,6 +10,8 @@ class AuthRoute {
         this.router.post('/nonce', AuthValidation.nonce(), AuthController.getNonce);
         this.router.post('/login', AuthValidation.login(), AuthController.login);
         this.router.post('/logout', Auth.authorize(), AuthController.logout);
+        this.router.post("/register", AuthValidation.register(), AuthController.register);
+        this.router.post('/login/bnb', AuthValidation.loginBNB(), AuthController.loginBNB);
         return this.router;
     }
 }

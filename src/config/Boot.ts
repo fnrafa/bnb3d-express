@@ -1,9 +1,5 @@
 import express from "express";
-/*import {readFileSync} from 'fs';*/
-
 import {createServer} from 'http';
-/*import {createServer} from 'https';*/
-
 import Limiter from "@/middleware/Limiter";
 import Cors from "@/middleware/Cors";
 import WebSocket from "@/config/WebSocket";
@@ -14,12 +10,6 @@ import ModelWorker from "@/workers/ModelWorker";
 
 class Boot {
     private static app = express();
-
-    /*private static options = {
-        key: readFileSync('/etc/letsencrypt/live/logicai.technology/privkey.pem'),
-        cert: readFileSync('/etc/letsencrypt/live/logicai.technology/fullchain.pem')
-    };
-    private static server = createServer(this.options, this.app);*/
 
     private static server = createServer(this.app);
 

@@ -132,11 +132,6 @@ class ModelWorker extends Service {
                     return;
                 } else if (result["status"] === "failed") {
                     WebSocket.sendMessage(meshId, "error", "Task Failed. Please Retry");
-                    await this.prisma.apiKey.update({
-                        where: {id: apiKeyId},
-                        data: {activeTasks: {decrement: 1}}
-                    });
-
                     await this.prisma.mesh.update({
                         where: {id: meshId},
                         data: {state: "failed"}
