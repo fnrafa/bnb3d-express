@@ -55,7 +55,7 @@ class Auth {
     }
 
     public static generateToken(id: string, address: string): string {
-        return jwt.sign({id, address}, Variables.SECRET, {expiresIn: "1h"});
+        return jwt.sign({id, address}, Variables.SECRET, {expiresIn: "24h"});
     }
 
     public static async revokeSession(token: string): Promise<void> {
