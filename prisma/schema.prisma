@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model ApiKey {
+  id          String   @id @default(uuid())
+  keyHash     String   @unique @db.VarChar(255)
+  activeTasks Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  meshes Mesh[]
+}
+
+model User {
+  id        String     @id @default(uuid())
+  username  String     @unique @db.VarChar(50)
+  address   String     @unique @db.VarChar(255)
+  nonce     String?    @db.VarChar(255)
+  password  String?    @db.VarChar(255)
+  point     Int        @default(0)
+  mesh      Mesh[]
+  favorites Favorite[]
+  session   Session?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model Mesh {
+  id        String  @id @default(uuid())
+  prompt    String  @db.Text
+  taskId    String? @db.VarChar(100)
+  totalView Int     @default(0)
+
+  modelGlb  String? @db.VarChar(255)
+  modelFbx  String? @db.VarChar(255)
+  modelUsdz String? @db.VarChar(255)
+  Image     String? @db.VarChar(255)
+
+  userId    String?
+  user      User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  apiKeyId  String?
+  apiKey    ApiKey?    @relation(fields: [apiKeyId], references: [id], onDelete: SetNull)
+  favorites Favorite[]
+
+  state     String   @default("pending") @db.VarChar(20)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Favorite {
+  id        String   @id @default(uuid())
+  userId    String
+  meshId    String?  @db.VarChar(100)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mesh      Mesh?    @relation(fields: [meshId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, meshId])
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  token     String   @db.Text
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
