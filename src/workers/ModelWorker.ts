@@ -140,9 +140,9 @@ class ModelWorker extends Service {
                     this.workerPool.set(apiKeyId, this.workerPool.get(apiKeyId)! - 1);
                     return;
                 }
-                const progress = result["progress"]? result["progress"] : "0";
+                const progress = result["progress"] ? Math.floor(result["progress"]) : 0;
 
-                WebSocket.sendMessage(meshId, "processing", `Still processing model, ${progress}%`);
+                WebSocket.sendMessage(meshId, "processing", `Hold tight! Your model is still processing... ${progress}% completed.`);
             } catch (error: any) {
                 WebSocket.sendMessage(meshId, "error", `Error checking status: ${error.message}`);
             }
